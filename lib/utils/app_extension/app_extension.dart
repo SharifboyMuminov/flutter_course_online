@@ -22,7 +22,7 @@ extension FirebaseAuthErrorHandler on FirebaseAuthException {
       case 'network-request-failed':
         return "Internetga ulanishda xatolik yuz berdi!";
       default:
-        return "Noma'lum xatolik: $message";
+        return "Noma'lum xatolik:  $message";
     }
   }
 }

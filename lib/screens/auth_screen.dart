@@ -2,6 +2,7 @@ import 'package:fire_auth/cubits/auth/auth_cubit.dart';
 import 'package:fire_auth/cubits/auth/auth_state.dart';
 import 'package:fire_auth/data/enums/forms_status.dart';
 import 'package:fire_auth/screens/home_screen.dart';
+import 'package:fire_auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,6 +36,22 @@ class _AuthScreenState extends State<AuthScreen> {
                   controller: _controllerPassword,
                   decoration: InputDecoration(hintText: "Inter password.."),
                 ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return LoginScreen();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text("Login"),
+                  ),
+                ),
                 SizedBox(height: 150),
                 TextButton(
                   style: TextButton.styleFrom(
@@ -65,10 +82,9 @@ class _AuthScreenState extends State<AuthScreen> {
         },
         listener: (BuildContext context, AuthState state) {
           if (state.formsStatus == FormsStatus.authenticated) {
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
               return HomeScreen();
-            }), (v) => false);
+            }));
           } else if (state.formsStatus == FormsStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

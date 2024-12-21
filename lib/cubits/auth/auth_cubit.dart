@@ -23,12 +23,34 @@ class AuthCubit extends Cubit<AuthState> {
     if (networkResponse.errorText.isEmpty) {
       emit(state.copyWith(formsStatus: FormsStatus.authenticated));
     } else {
-      emit(
-        state.copyWith(
-          formsStatus: FormsStatus.error,
-          errorText: networkResponse.errorText,
-        ),
-      );
+      setStateToError(networkResponse.errorText);
     }
+  }
+
+  Future<void> loginUser({
+    required String email,
+    required String password,
+  }) async {
+    emit(state.copyWith(formsStatus: FormsStatus.loading));
+
+    NetworkResponse networkResponse = await _authRepository.loginUser(
+      email: email,
+      password: password,
+    );
+
+    if (networkResponse.errorText.isEmpty) {
+      emit(state.copyWith(formsStatus: FormsStatus.authenticated));
+    } else {
+      setStateToError(networkResponse.errorText);
+    }
+  }
+
+  void setStateToError(String errorText) {
+    emit(
+      state.copyWith(
+        formsStatus: FormsStatus.error,
+        errorText: errorText,
+      ),
+    );
   }
 }

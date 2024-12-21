@@ -1,6 +1,9 @@
 import 'package:fire_auth/cubits/auth/auth_cubit.dart';
+import 'package:fire_auth/cubits/user/user_cubit.dart';
+import 'package:fire_auth/data/local/storage_repository.dart';
 import 'package:fire_auth/data/repositories/auth_repository.dart';
-import 'package:fire_auth/screens/auth_screen.dart';
+import 'package:fire_auth/data/repositories/user_repository.dart';
+import 'package:fire_auth/screens/splash_screen.dart';
 import 'package:fire_auth/service/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +14,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  StorageRepository.instance;
   runApp(const MyApp());
 }
 
@@ -24,11 +29,17 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (_) => AuthRepository(),
         ),
+        RepositoryProvider(
+          create: (_) => UserRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => AuthCubit(context.read<AuthRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => UserCubit(context.read<UserRepository>()),
           ),
         ],
         child: MaterialApp(
@@ -37,7 +48,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             useMaterial3: true,
           ),
-          home: AuthScreen(),
+          home: SplashScreen(),
         ),
       ),
     );
