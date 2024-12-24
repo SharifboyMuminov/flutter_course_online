@@ -1,6 +1,6 @@
 import 'package:fire_auth/data/local/storage_repository.dart';
-import 'package:fire_auth/screens/auth_screen.dart';
-import 'package:fire_auth/screens/home_screen.dart';
+import 'package:fire_auth/screens/auth/auth_screen.dart';
+import 'package:fire_auth/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

@@ -47,6 +47,11 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             useMaterial3: true,
+            scaffoldBackgroundColor: Colors.white,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.transparent,
+            ),
           ),
           home: SplashScreen(),
         ),

@@ -1,8 +1,8 @@
 import 'package:fire_auth/cubits/auth/auth_cubit.dart';
 import 'package:fire_auth/cubits/auth/auth_state.dart';
 import 'package:fire_auth/data/enums/forms_status.dart';
-import 'package:fire_auth/screens/home_screen.dart';
-import 'package:fire_auth/screens/login_screen.dart';
+import 'package:fire_auth/screens/home/home_screen.dart';
+import 'package:fire_auth/screens/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
