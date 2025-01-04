@@ -1,47 +1,47 @@
 class UserModel {
   final String docId;
-  final String email;
-  final String fullName;
+  final String phoneNumber;
+  final String password;
 
   UserModel({
-    required this.fullName,
+    required this.password,
     required this.docId,
-    required this.email,
+    required this.phoneNumber,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      fullName: json["full_name"] as String? ?? "",
+      password: json["password"] as String? ?? "",
       docId: json["doc_id"] as String? ?? "",
-      email: json["user_email"] as String? ?? "",
+      phoneNumber: json["phone_number"] as String? ?? "",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "full_name": fullName,
+      "password": password,
       "doc_id": docId,
-      "user_email": email,
+      "phone_number": phoneNumber,
     };
   }
 
   factory UserModel.initial() {
     return UserModel(
-      fullName: "",
+      password: "",
       docId: "",
-      email: "",
+      phoneNumber: "",
     );
   }
 
   UserModel copyWith({
     String? docId,
-    String? email,
-    String? fullName,
+    String? phoneNumber,
+    String? password,
   }) {
     return UserModel(
-      fullName: fullName ?? this.fullName,
+      password: password ?? this.password,
       docId: docId ?? this.docId,
-      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
     );
   }
 }

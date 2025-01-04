@@ -3,7 +3,7 @@ import 'package:fire_auth/cubits/user/user_cubit.dart';
 import 'package:fire_auth/data/local/storage_repository.dart';
 import 'package:fire_auth/data/repositories/auth_repository.dart';
 import 'package:fire_auth/data/repositories/user_repository.dart';
-import 'package:fire_auth/screens/splash_screen.dart';
+import 'package:fire_auth/screens/splash/splash_screen.dart';
 import 'package:fire_auth/service/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

@@ -9,32 +9,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepository _authRepository;
 
-  Future<void> registerUser({
-    required String email,
-    required String password,
-  }) async {
-    emit(state.copyWith(formsStatus: FormsStatus.loading));
-
-    NetworkResponse networkResponse = await _authRepository.registerUser(
-      email: email,
-      password: password,
-    );
-
-    if (networkResponse.errorText.isEmpty) {
-      emit(state.copyWith(formsStatus: FormsStatus.authenticated));
-    } else {
-      setStateToError(networkResponse.errorText);
-    }
-  }
 
   Future<void> loginUser({
-    required String email,
+    required String phoneNumber,
     required String password,
   }) async {
     emit(state.copyWith(formsStatus: FormsStatus.loading));
 
     NetworkResponse networkResponse = await _authRepository.loginUser(
-      email: email,
+      phoneNumber: phoneNumber,
       password: password,
     );
 

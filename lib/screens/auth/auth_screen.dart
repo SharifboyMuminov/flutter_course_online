@@ -1,8 +1,7 @@
 import 'package:fire_auth/cubits/auth/auth_cubit.dart';
 import 'package:fire_auth/cubits/auth/auth_state.dart';
 import 'package:fire_auth/data/enums/forms_status.dart';
-import 'package:fire_auth/screens/home_screen.dart';
-import 'package:fire_auth/screens/login_screen.dart';
+import 'package:fire_auth/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +13,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPhoneNumber = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
   @override
@@ -28,29 +27,14 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 SizedBox(height: 150),
                 TextFormField(
-                  controller: _controllerEmail,
-                  decoration: InputDecoration(hintText: "Inter emal.."),
+                  textInputAction: TextInputAction.next,
+                  controller: _controllerPhoneNumber,
+                  decoration: InputDecoration(hintText: "Inter phone number.."),
                 ),
                 SizedBox(height: 50),
                 TextFormField(
                   controller: _controllerPassword,
                   decoration: InputDecoration(hintText: "Inter password.."),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return LoginScreen();
-                          },
-                        ),
-                      );
-                    },
-                    child: Text("Login"),
-                  ),
                 ),
                 SizedBox(height: 150),
                 TextButton(
@@ -60,8 +44,8 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    context.read<AuthCubit>().registerUser(
-                          email: _controllerEmail.text,
+                    context.read<AuthCubit>().loginUser(
+                          phoneNumber: _controllerPhoneNumber.text,
                           password: _controllerPassword.text,
                         );
                   },
@@ -103,7 +87,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   void dispose() {
-    _controllerEmail.dispose();
+    _controllerPhoneNumber.dispose();
     _controllerPassword.dispose();
     super.dispose();
   }
