@@ -5,10 +5,12 @@ class CostumeButton extends StatelessWidget {
     super.key,
     required this.onTab,
     this.isActive = true,
+    this.icLoader = false,
   });
 
   final VoidCallback onTab;
   final bool isActive;
+  final bool icLoader;
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +20,19 @@ class CostumeButton extends StatelessWidget {
             isActive ? Colors.blue : Colors.grey.withValues(alpha: 0.7),
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       ),
-      onPressed: isActive ? onTab : null,
-      child: Text(
-        "Submit",
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
+      onPressed: icLoader
+          ? null
+          : isActive
+              ? onTab
+              : null,
+      child: icLoader
+          ? CircularProgressIndicator.adaptive()
+          : Text(
+              "Submit",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
     );
   }
 }

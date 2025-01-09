@@ -1,7 +1,13 @@
 import 'package:fire_auth/cubits/auth/auth_cubit.dart';
+import 'package:fire_auth/cubits/category/category_cubit.dart';
+import 'package:fire_auth/cubits/home/home_cubit.dart';
+import 'package:fire_auth/cubits/product/product_cubit.dart';
 import 'package:fire_auth/cubits/user/user_cubit.dart';
 import 'package:fire_auth/data/local/storage_repository.dart';
 import 'package:fire_auth/data/repositories/auth_repository.dart';
+import 'package:fire_auth/data/repositories/category_repository.dart';
+import 'package:fire_auth/data/repositories/home_repository.dart';
+import 'package:fire_auth/data/repositories/product_repository.dart';
 import 'package:fire_auth/data/repositories/user_repository.dart';
 import 'package:fire_auth/screens/splash/splash_screen.dart';
 import 'package:fire_auth/service/firebase_options.dart';
@@ -32,6 +38,15 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (_) => UserRepository(),
         ),
+        RepositoryProvider(
+          create: (_) => HomeRepository(),
+        ),
+        RepositoryProvider(
+          create: (_) => CategoryRepository(),
+        ),
+        RepositoryProvider(
+          create: (_) => ProductRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -40,6 +55,17 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => UserCubit(context.read<UserRepository>()),
+          ),
+          BlocProvider(
+            create: (context) => HomeCubit(context.read<HomeRepository>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                ProductCubit(context.read<ProductRepository>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                CategoryCubit(context.read<CategoryRepository>()),
           ),
         ],
         child: MaterialApp(
