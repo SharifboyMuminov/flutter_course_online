@@ -23,9 +23,27 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> getProducts() async {
-    emit(state.copyWith(formsStatus: FormsStatus.loading));
+    emit(state.copyWith(formsStatus: FormsStatus.subLoading));
 
     NetworkResponse networkResponse = await _homeRepository.getProducts();
+
+    if (networkResponse.errorText.isEmpty) {
+      emit(
+        state.copyWith(
+          formsStatus: FormsStatus.success,
+          products: networkResponse.data,
+        ),
+      );
+    } else {
+      setStateToError(networkResponse.errorText);
+    }
+  }
+
+  Future<void> setCategory(String categoryId) async {
+    emit(state.copyWith(formsStatus: FormsStatus.subLoading));
+
+    NetworkResponse networkResponse =
+        await _homeRepository.getProductsForCategoryId(categoryId);
 
     if (networkResponse.errorText.isEmpty) {
       emit(

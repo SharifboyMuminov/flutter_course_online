@@ -2,6 +2,7 @@ import 'package:fire_auth/cubits/home/home_cubit.dart';
 import 'package:fire_auth/cubits/product/product_cubit.dart';
 import 'package:fire_auth/cubits/product/product_state.dart';
 import 'package:fire_auth/data/enums/forms_status.dart';
+import 'package:fire_auth/data/local/storage_repository.dart';
 import 'package:fire_auth/data/model/category_model.dart';
 import 'package:fire_auth/data/model/product_model.dart';
 import 'package:fire_auth/screens/home/widget/costume_button.dart';
@@ -11,7 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+  const AddProductScreen({super.key, required this.onFetch});
+  final VoidCallback onFetch;
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
@@ -125,12 +127,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   icLoader: state.formsStatus == FormsStatus.loading,
                   isActive: checkInput(),
                   onTab: () {
+                    String userId = StorageRepository.getString(key: "user_id");
                     ProductModel productModel = ProductModel(
                       imageUrl: imageUrl,
                       title: productName,
                       categoryId: categoryModel?.categoryId ?? "",
                       id: "",
                       about: about,
+                      adminId: userId,
                     );
                     context
                         .read<ProductCubit>()
@@ -143,6 +147,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         },
         listener: (BuildContext context, state) {
           if (state.statusMessage == "pop") {
+            widget.onFetch.call();
             context.read<HomeCubit>().getCategories();
             Navigator.pop(context);
           }

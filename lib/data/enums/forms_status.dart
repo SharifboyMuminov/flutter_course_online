@@ -3,6 +3,7 @@ enum FormsStatus {
   success,
   error,
   loading,
+  subLoading,
   unauthenticated,
   authenticated,
 }

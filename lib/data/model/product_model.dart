@@ -3,6 +3,7 @@ class ProductModel {
   final String title;
   final String id;
   final String categoryId;
+  final String adminId;
   final String about;
 
   ProductModel({
@@ -11,6 +12,7 @@ class ProductModel {
     required this.categoryId,
     required this.id,
     required this.about,
+    required this.adminId,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class ProductModel {
       id: json["id"] as String? ?? "",
       categoryId: json["category_id"] as String? ?? "",
       about: json["about"] as String? ?? "",
+      adminId: json["admin_id"] as String? ?? "",
     );
   }
 
@@ -29,6 +32,7 @@ class ProductModel {
     String? categoryId,
     String? id,
     String? about,
+    String? adminId,
   }) {
     return ProductModel(
       imageUrl: imageUrl ?? this.imageUrl,
@@ -36,6 +40,7 @@ class ProductModel {
       categoryId: categoryId ?? this.categoryId,
       id: id ?? this.id,
       about: about ?? this.about,
+      adminId: adminId ?? this.adminId,
     );
   }
 
@@ -46,6 +51,7 @@ class ProductModel {
       "imageUrl": imageUrl,
       "title": title,
       "about": about,
+      "admin_id": adminId,
     };
   }
 }
