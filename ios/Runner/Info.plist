@@ -45,5 +45,29 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+
+    <!-- Remote Notifications -->
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+    </array>
+
+    <!-- Request permission for notifications -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
+
+    <!-- Explain why your app needs notifications -->
+    <key>NSUserNotificationUsageDescription</key>
+    <string>Bildirishnomalarni olish uchun ruxsat bering.</string>
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
+
+
+
 </dict>
 </plist>

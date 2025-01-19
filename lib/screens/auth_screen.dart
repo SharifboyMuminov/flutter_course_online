@@ -3,6 +3,7 @@ import 'package:fire_auth/cubits/auth/auth_state.dart';
 import 'package:fire_auth/data/enums/forms_status.dart';
 import 'package:fire_auth/screens/home_screen.dart';
 import 'package:fire_auth/screens/login_screen.dart';
+import 'package:fire_auth/service/notifi_server.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,6 +17,12 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
+
+  @override
+  void initState() {
+    NotificationService.initNotification();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +105,20 @@ class _AuthScreenState extends State<AuthScreen> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          NotificationService.showNotification(
+            id: messageId,
+            title: "Qodnay",
+            body: "Good",
+          );
+          messageId++;
+        },
+      ),
     );
   }
+
+  int messageId = 1;
 
   @override
   void dispose() {
