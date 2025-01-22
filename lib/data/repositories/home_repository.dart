@@ -60,27 +60,12 @@ class HomeRepository {
 
   Stream<List<ProductModel>> getProduct({String categoryId = ""}) {
     try {
-      if (categoryId.isNotEmpty) {
-        return _firebaseFirestore
-            .collection("product")
-            .where("category_id", isEqualTo: categoryId)
-            .snapshots()
-            .map(
-              (snapshot) => snapshot.docs
-                  .map(
-                    (doc) => ProductModel.fromJson(doc.data()),
-                  )
-                  .toList(),
-            );
-      }
-
       return _firebaseFirestore.collection("product").snapshots().map(
             (snapshot) => snapshot.docs
-                .map(
-                  (doc) => ProductModel.fromJson(doc.data()),
-                )
-                .toList(),
-          );
+            .map((doc) => ProductModel.fromJson(doc.data()))
+            .where((product) => product.categoryId == categoryId || categoryId.isEmpty)
+            .toList(),
+      );
     } on FirebaseException catch (e) {
       log(e.friendlyMessage);
 
