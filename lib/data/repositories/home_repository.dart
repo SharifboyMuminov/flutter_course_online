@@ -31,14 +31,15 @@ class HomeRepository {
     return networkResponse;
   }
 
-  Future<NetworkResponse> getProducts() async {
+  Future<NetworkResponse> getProductsForCategoryId(String categoryId) async {
     NetworkResponse networkResponse = NetworkResponse();
+
     String userId = StorageRepository.getString(key: "user_id");
 
     try {
       var result = await _firebaseFirestore
           .collection("product")
-          .where("admin_id", isEqualTo: userId)
+          .where("category_id", isEqualTo: categoryId)
           .get();
 
       networkResponse.data = result.docs
@@ -57,31 +58,37 @@ class HomeRepository {
     return networkResponse;
   }
 
-  Future<NetworkResponse> getProductsForCategoryId(String categoryId) async {
-    NetworkResponse networkResponse = NetworkResponse();
-
-    String userId = StorageRepository.getString(key: "user_id");
-
+  Stream<List<ProductModel>> getProduct({String categoryId = ""}) {
     try {
-      var result = await _firebaseFirestore
-          .collection("product")
-          .where("category_id", isEqualTo: categoryId)
-          .where("admin_id", isEqualTo: userId)
-          .get();
+      if (categoryId.isNotEmpty) {
+        return _firebaseFirestore
+            .collection("product")
+            .where("category_id", isEqualTo: categoryId)
+            .snapshots()
+            .map(
+              (snapshot) => snapshot.docs
+                  .map(
+                    (doc) => ProductModel.fromJson(doc.data()),
+                  )
+                  .toList(),
+            );
+      }
 
-      networkResponse.data = result.docs
-          .map((value) => ProductModel.fromJson(value.data()))
-          .toList();
+      return _firebaseFirestore.collection("product").snapshots().map(
+            (snapshot) => snapshot.docs
+                .map(
+                  (doc) => ProductModel.fromJson(doc.data()),
+                )
+                .toList(),
+          );
     } on FirebaseException catch (e) {
       log(e.friendlyMessage);
 
-      networkResponse.errorText = e.friendlyMessage;
+      return Stream.error("Firebase xatoligi: ${e.friendlyMessage}");
     } catch (e) {
       log("Noma'lum xatolik: catch (e) ");
 
-      networkResponse.errorText = "Noma'lum xatolik: catch (e) ";
+      return Stream.error("Noma'lum xatolik: $e");
     }
-
-    return networkResponse;
   }
 }

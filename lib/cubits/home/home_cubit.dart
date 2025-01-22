@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:fire_auth/cubits/home/home_state.dart';
 import 'package:fire_auth/data/enums/forms_status.dart';
 import 'package:fire_auth/data/model/network_response.dart';
+import 'package:fire_auth/data/model/product_model.dart';
 import 'package:fire_auth/data/repositories/home_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +11,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._homeRepository) : super(HomeState.initial());
 
   final HomeRepository _homeRepository;
+  late StreamSubscription<List<ProductModel>> _productsListen;
 
   Future<void> getCategories() async {
     emit(state.copyWith(formsStatus: FormsStatus.loading));
@@ -16,47 +20,42 @@ class HomeCubit extends Cubit<HomeState> {
 
     if (networkResponse.errorText.isEmpty) {
       emit(state.copyWith(categories: networkResponse.data));
-      getProducts();
+      listenProducts();
     } else {
       setStateToError(networkResponse.errorText);
     }
   }
 
-  Future<void> getProducts() async {
-    emit(state.copyWith(formsStatus: FormsStatus.subLoading));
+  Future<void> listenProducts([String categoryId = ""]) async {
+    emit(state.copyWith(formsStatus: FormsStatus.loading));
 
-    NetworkResponse networkResponse = await _homeRepository.getProducts();
-
-    if (networkResponse.errorText.isEmpty) {
-      emit(
-        state.copyWith(
-          formsStatus: FormsStatus.success,
-          products: networkResponse.data,
-        ),
-      );
-    } else {
-      setStateToError(networkResponse.errorText);
-    }
+    _productsListen = _homeRepository.getProduct(categoryId: categoryId).listen(
+      (response) {
+        if (!isClosed) {
+          emit(
+            state.copyWith(
+              formsStatus: FormsStatus.success,
+              products: response,
+            ),
+          );
+        }
+      },
+      onError: (error) {
+        setStateToError(error.toString());
+      },
+    );
   }
 
-  Future<void> setCategory(String categoryId) async {
-    emit(state.copyWith(formsStatus: FormsStatus.subLoading));
-
-    NetworkResponse networkResponse =
-        await _homeRepository.getProductsForCategoryId(categoryId);
-
-    if (networkResponse.errorText.isEmpty) {
-      emit(
-        state.copyWith(
-          formsStatus: FormsStatus.success,
-          products: networkResponse.data,
-        ),
-      );
-    } else {
-      setStateToError(networkResponse.errorText);
-    }
-  }
-
+  // Future<void> setCategory(String categoryId) async {
+  //   List<ProductModel> products = state.products.where(
+  //     (item) {
+  //       return item.categoryId == categoryId;
+  //     },
+  //   ).toList();
+  //
+  //   emit(state.copyWith(products: products));
+  // }
+  //
   void setStateToError(String errorText) {
     emit(
       state.copyWith(
@@ -64,5 +63,11 @@ class HomeCubit extends Cubit<HomeState> {
         errorText: errorText,
       ),
     );
+  }
+
+  @override
+  Future<void> close() {
+    _productsListen.cancel();
+    return super.close();
   }
 }

@@ -1,10 +1,8 @@
-import 'package:fire_auth/cubits/auth/auth_cubit.dart';
 import 'package:fire_auth/cubits/category/category_cubit.dart';
 import 'package:fire_auth/cubits/home/home_cubit.dart';
 import 'package:fire_auth/cubits/product/product_cubit.dart';
 import 'package:fire_auth/cubits/user/user_cubit.dart';
 import 'package:fire_auth/data/local/storage_repository.dart';
-import 'package:fire_auth/data/repositories/auth_repository.dart';
 import 'package:fire_auth/data/repositories/category_repository.dart';
 import 'package:fire_auth/data/repositories/home_repository.dart';
 import 'package:fire_auth/data/repositories/product_repository.dart';
@@ -32,9 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-          create: (_) => AuthRepository(),
-        ),
+
         RepositoryProvider(
           create: (_) => UserRepository(),
         ),
@@ -50,9 +46,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(
-            create: (context) => AuthCubit(context.read<AuthRepository>()),
-          ),
+
           BlocProvider(
             create: (context) => UserCubit(context.read<UserRepository>()),
           ),

@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           setState(() {
                             _activeIndexCategory = index;
                           });
-                          context.read<HomeCubit>().setCategory(
+                          context.read<HomeCubit>().listenProducts(
                               state.categories[index - 1].categoryId);
                           _scrollToTop();
                         },
